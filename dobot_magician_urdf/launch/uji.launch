@@ -1,0 +1,29 @@
+<launch>
+    <!-- Argument to control the use of GUI with the joint state publisher -->
+    <arg name="use_gui" default="false"/>
+
+    <!-- Robot description parameter -->
+    <param name="robot_description" command="$(find xacro)/xacro '$(find dobot)/model/magician_standalone.xml'"/>
+
+    <!-- Joint State Publisher Node -->
+    <!-- Uses the GUI argument to decide whether to launch the GUI version or not -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" if="$(arg use_gui)">
+        <param name="use_gui" value="true"/>
+    </node>
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg use_gui)"/> -->
+
+    <!-- Robot State Publisher Node -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="publish_frequency" value="50.0"/>
+    </node>
+
+    <!-- Keyboard Control Node -->
+    <!-- Make sure to set the correct package and script location -->
+    <!-- <node name="keyboard_control" pkg="dobot" type="keyboard.py" output="screen"/> -->
+    <node name="dobot_control" pkg="dobot_py" type="joy_boy.py" output="screen"/>
+
+    <!-- RViz for visualization -->
+    <!-- Make sure the RViz configuration file path is correct -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find dobot)/config/rviz.rviz"/>
+
+</launch>
